@@ -1,20 +1,56 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native'
+import { createNativeStackNavigator } from '@react-navigation/native-stack'
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
-export default function App() {
+
+import LoginScreen from './screens/Login'
+import DetailScreen from './screens/Detail'
+
+import useAuth from './hooks/useAuth'
+
+const Stack = createNativeStackNavigator()
+const Tab = createBottomTabNavigator()
+
+function Landing() {
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <Tab.Navigator>
+      <Tab.Screen name="Detail" component={DetailScreen} />
+    </Tab.Navigator>
+  )
+}
+function App() {
+  const { isAuthenticated } = useAuth()
+  return (
+      <NavigationContainer>
+        <Stack.Navigator>
+          { isAuthenticated ? 
+            (
+              <Stack.Screen 
+                name="Home"
+                options={{ headerShown: false }}
+                component={Landing}
+              />
+            ) 
+            :
+            (
+              <Stack.Screen 
+                name="Login"
+                options={{ headerShown: false }}
+                component={LoginScreen}
+              />
+            )
+
+            
+            
+          }
+          <Stack.Screen 
+            name="Home"
+            options={{ headerShown: false }}
+            component={Landing}
+          />
+        </Stack.Navigator>
+      </NavigationContainer>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+export default App
