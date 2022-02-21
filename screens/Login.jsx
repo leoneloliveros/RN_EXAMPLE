@@ -33,8 +33,8 @@ const Login = ({ navigation }) => {
     try{
 
       const response = await loginRequest(form)
-       const { token } = await response.json()
-       await storeData(token)
+       const result = await response.json()
+       await storeData(result.token)
        navigation.navigate('Home', {
         screen: 'Detail',
         initial: false,
@@ -60,10 +60,14 @@ const Login = ({ navigation }) => {
       <TextInput 
         style={styles.input}
         onChangeText={(text) => handleChange("email", text)}
+        autoCapitalize="none"
+        keyboardType='email-address'
       />
       <TextInput 
+        autoCapitalize="none"
         style={styles.input}
         onChangeText={(text) => handleChange("password", text)}
+        secureTextEntry
       />
       <TouchableOpacity
         style={styles.button}

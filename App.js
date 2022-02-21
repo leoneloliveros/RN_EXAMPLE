@@ -1,10 +1,10 @@
 import { NavigationContainer } from '@react-navigation/native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-
+import registerNNPushToken from 'native-notify';
 
 import LoginScreen from './screens/Login'
-import DetailScreen from './screens/Detail'
+import CharactersScreen from './screens/Characters'
 
 import useAuth from './hooks/useAuth'
 
@@ -14,11 +14,13 @@ const Tab = createBottomTabNavigator()
 function Landing() {
   return (
     <Tab.Navigator>
-      <Tab.Screen name="Detail" component={DetailScreen} />
+      <Tab.Screen name="Characters" component={CharactersScreen} />
+      <Tab.Screen name="Detail2" component={CharactersScreen} />
     </Tab.Navigator>
   )
 }
 function App() {
+  registerNNPushToken(2134, 'sqVJkbWXxl3GQfwaGN5ExS');
   const { isAuthenticated } = useAuth()
   return (
       <NavigationContainer>
@@ -30,24 +32,14 @@ function App() {
                 options={{ headerShown: false }}
                 component={Landing}
               />
-            ) 
-            :
-            (
+            ) : (
               <Stack.Screen 
                 name="Login"
                 options={{ headerShown: false }}
                 component={LoginScreen}
               />
             )
-
-            
-            
           }
-          <Stack.Screen 
-            name="Home"
-            options={{ headerShown: false }}
-            component={Landing}
-          />
         </Stack.Navigator>
       </NavigationContainer>
   );
